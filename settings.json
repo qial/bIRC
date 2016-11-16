@@ -1,0 +1,16 @@
+{
+  "server": "irc.purplesurge.com",
+  "nicknames": [
+    "Mandork",
+    "Mandork1",
+    "Mandork2"
+  ],
+  "username": "aids",
+  "realName": "aids",
+  "mode": "shit",
+  "channels": [
+    "#orps",
+    "#vrpoutcharacter"
+  ],
+  "port": 6667
+}

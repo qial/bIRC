@@ -1,0 +1,7 @@
+server=irc.purplesurge.com
+port=6667
+nicknames=Mandork, Mandork1, Mandork2
+mode=shit
+realname=aids
+username=aids
+channels=#orps, #vrpoutcharacter
