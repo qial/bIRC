@@ -12,7 +12,7 @@ First you have to create a class which extends `Route`.
 ```
 class RespondToHello extends Route
 {
-    MyRoute(String commandWord) // note, your constructor needs to call super with route's trigger word.
+    RespondToHello(String commandWord) // note, your constructor needs to call super with route's trigger word.
     {
         super(commandWord);
     }
