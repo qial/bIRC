@@ -1,4 +1,4 @@
-package lt.dragas.birc.basic
+package lt.dragas.birc.basic.route
 
 import lt.dragas.birc.basic.exception.DuplicateItemException
 import lt.dragas.birc.basic.exception.FinalRouteGroupException
@@ -15,7 +15,7 @@ import java.util.*
  * The check for type of route is done via bitwise and operation, thus allowing you to merge route types into groups as well.
  *
  * Because this class implements a runnable interface, it permits asynchronous concurrent calls.
- * @property ignoreCaps Denotes if this route should respond regardless of [triggerWord] capitalization. Default - true
+ * @property ignoreCaps Denotes if this route should respond regardless of [command] capitalization. Default - true
  *
  * @property type Denotes type for this route. By default might be CHANNEL, PING, PRIVATE, or NONE.
  * Does not implement default value, unless you're extending one of the recommended classes.
@@ -23,51 +23,39 @@ import java.util.*
  * @property isEnabled Denotes whether or not this particular route is enabled. Useful for disabling routes at runtime.
  * Default - true.
  *
- * @property hasArguments Denotes whether or not the [triggerWord] is separated with space from message in response from server.
+ * @property hasArguments Denotes whether or not the [command] is separated with space from message in response from server.
  * Default - true.
  *
- * @property triggerWord Denotes when this route should be triggered. Does not contain default value, but may be an empty string.
+ * @property command Denotes when this route should be triggered. Does not contain default value, but may be an empty string.
  */
-abstract class Route(val triggerWord: String) : Listener.Route, Runnable
+open class Route(val command: String)
 {
-    open val type: Int = NONE
-    open var ignoreCaps: Boolean = true
-    open var isEnabled: Boolean = true
-    open val hasArguments: Boolean = true
-    @Volatile open lateinit var request: Request
-    val commandWord: String
+    protected var type: Int = NONE
+    protected var ignoreCaps: Boolean = true
+    protected var isEnabled: Boolean = true
+    open protected var hasArguments: Boolean = true
+    open protected lateinit var controller: Controller
+    protected val commandWord: String
         get()
         {
-            val sb = StringBuilder(triggerWord)
+            val sb = StringBuilder(command)
             if (hasArguments)
                 sb.append(" ")
             return sb.toString()
         }
 
     /**
-     * Checks whether or not this particular route can be triggered by checking 3 parameters: [isEnabled], [triggerWord] and [type].
+     * Checks whether or not this particular route can be triggered by checking 3 parameters: [isEnabled], [command] and [type].
      * Note: type is checked with bitwise operation "and", thus allowing you to merge few response types into one.
      */
-    override fun canTrigger(request: Request): Boolean
+    open fun canTrigger(request: Request): Boolean
     {
         if (isEnabled && request.message.startsWith(commandWord, ignoreCaps) && request.type.and(type) == type)
         {
-            doTrigger(request)
+            controller.onTrigger(request)
             return true
         }
         return false
-    }
-
-    open fun doTrigger(request: Request)
-    {
-        request.message = request.message.replaceFirst(commandWord, "", true)
-        this.request = request
-        Thread(this, commandWord).start()
-    }
-
-    override fun run()
-    {
-        onTrigger(request)
     }
 
     /**
@@ -77,13 +65,23 @@ abstract class Route(val triggerWord: String) : Listener.Route, Runnable
      * Contents of RouteGroup are not meant to be modified at runtime, thus its content is converted to an array.
      * Also RouteGroups may not contain [Route] with matching [triggerWord]
      */
-    abstract class RouteGroup(commandWord: String, vararg routes: Route) : Route(commandWord)
+    open class RouteGroup(val command: String, vararg routes: Route)
     {
-        override var hasArguments: Boolean = true
-        private lateinit var routeArray: Array<Route>
-        private var routeMap = HashMap<String, Route>()
-        private var isFinal = false
-
+        protected var hasArguments: Boolean = true
+        protected lateinit var routeArray: Array<Route>
+        protected var routeMap = HashMap<String, Route>()
+        protected var isFinal = false
+        protected var type: Int = NONE
+        protected var ignoreCaps: Boolean = true
+        protected var isEnabled: Boolean = true
+        protected val commandWord: String
+            get()
+            {
+                val sb = StringBuilder(command)
+                if (hasArguments)
+                    sb.append(" ")
+                return sb.toString()
+            }
         init
         {
             routes.forEach {
@@ -121,7 +119,7 @@ abstract class Route(val triggerWord: String) : Listener.Route, Runnable
          * @throws NotFinalRouteGroupException if this particular group hasn't been finalized
          */
 
-        override fun canTrigger(request: Request): Boolean
+        fun canTrigger(request: Request): Boolean
         {
             if (!isFinal)
                 throw NotFinalRouteGroupException()
@@ -141,12 +139,61 @@ abstract class Route(val triggerWord: String) : Listener.Route, Runnable
          * In [RouteGroup] this method shouldn't be called as the group is not guaranteed to have a
          * route that corresponds to particular request.
          */
-        override fun onTrigger(request: Request)
+        fun onTrigger(request: Request)
         {
             throw NoSuchMethodException()
         }
     }
 
+    class Builder
+    {
+        private var controller: Controller? = null
+        private var command: String? = null
+        private var ignoreCaps: Boolean = false
+        private var hasArguments: Boolean = false
+        private var type: Int = NONE
+        fun build(): Route
+        {
+            val controller = this.controller ?: throw Exception("Controller is null. Are you sure such route should exist?")
+            val command = this.command ?: throw Exception("Command is null. Are you sure such route should exist?")
+            val route: Route = Route(command)
+            route.controller = controller
+            route.ignoreCaps = this.ignoreCaps
+            route.hasArguments = this.hasArguments
+            route.type = this.type
+            return route
+        }
+
+        fun setController(controller: Controller): Builder
+        {
+            this.controller = controller
+            return this
+        }
+
+        fun setCommand(command: String): Builder
+        {
+            this.command = command
+            return this
+        }
+
+        fun setIgnoreCaps(shouldIgnore: Boolean): Builder
+        {
+            ignoreCaps = shouldIgnore
+            return this
+        }
+
+        fun setHasArguments(hasArguments: Boolean): Builder
+        {
+            this.hasArguments = hasArguments
+            return this
+        }
+
+        fun setType(type: Int): Builder
+        {
+            this.type = type
+            return this
+        }
+    }
     companion object
     {
         /**

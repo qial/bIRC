@@ -1,7 +1,4 @@
-package lt.dragas.birc.basic
-
-import lt.dragas.birc.message.Request
-import lt.dragas.birc.message.Response
+package lt.dragas.birc.basic.listeners
 
 
 interface Listener
@@ -24,22 +21,5 @@ interface Listener
          */
 
         fun onPong()
-    }
-
-    interface Route
-    {
-        /**
-         *  A callback for route when the it has been successfully triggered.
-         *
-         *  @return [Response] - formatted response by this particular route
-         */
-        fun onTrigger(request: Request)
-
-        /**
-         * Returns whether or not a thread with this particular Route has been started.
-         *
-         * @return true, if a thread had been started, otherwise false.
-         */
-        fun canTrigger(request: Request): Boolean
     }
 }

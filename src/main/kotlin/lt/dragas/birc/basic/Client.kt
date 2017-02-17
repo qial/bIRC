@@ -1,6 +1,10 @@
 package lt.dragas.birc.basic
 
-import lt.dragas.birc.basic.Route.RouteGroup
+
+import lt.dragas.birc.basic.io.Input
+import lt.dragas.birc.basic.io.Output
+import lt.dragas.birc.basic.listeners.Listener
+import lt.dragas.birc.basic.route.Route
 import lt.dragas.birc.message.Request
 import lt.dragas.birc.message.Response
 import java.net.InetSocketAddress
@@ -10,7 +14,7 @@ import java.net.Socket
  * Contains default methods needed for [Socket] to work in general.
  * @param routes Route set, which consumes [Request] to generate [Response].
  */
-abstract class Client(val routes: Array<RouteGroup>) : Socket(), Listener.Client
+abstract class Client(val routes: Array<Route.RouteGroup>) : Socket(), Listener.Client
 {
     lateinit var settings: Settings
     abstract var sin: Input

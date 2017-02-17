@@ -1,22 +1,24 @@
 package lt.dragas.birc.routes.channel;
 
-import lt.dragas.birc.basic.Route;
+import org.jetbrains.annotations.NotNull;
+
+import lt.dragas.birc.basic.io.Output;
+import lt.dragas.birc.basic.route.Controller;
 import lt.dragas.birc.helper.RegexHelper;
 import lt.dragas.birc.message.Request;
 import lt.dragas.birc.message.Response;
-import org.jetbrains.annotations.NotNull;
 
 
-public class Random extends Route
+public class Random extends Controller
 {
     private java.util.Random rng = new java.util.Random();
 
-    public Random()
+    /*//public Random()
     {
         super("");
-    }
+    }*/
 
-    @Override
+    /*@Override
 
     public boolean canTrigger(@NotNull Request request)
     {
@@ -28,11 +30,10 @@ public class Random extends Route
             return true;
         }
         return false;
-    }
+    }*/
 
-    @NotNull
     @Override
-    public Response onTrigger(@NotNull Request request)
+    public void onTrigger(@NotNull Request request)
     {
         String[] args = request.getMessage().split("d");
         int count = Integer.parseInt(args[0]);
@@ -66,6 +67,6 @@ public class Random extends Route
             sb.append(". Mod: ");
             sb.append(mod);
         }
-        return new Response(request.getTarget(), sb.toString());
+        Output.Companion.getDefault().writeResponse(new Response(request.getTarget(), sb.toString()));
     }
 }

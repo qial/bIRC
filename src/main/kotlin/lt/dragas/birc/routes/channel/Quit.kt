@@ -1,17 +1,15 @@
 package lt.dragas.birc.routes.channel
 
-import lt.dragas.birc.basic.Route
+import lt.dragas.birc.basic.io.Output
+import lt.dragas.birc.basic.route.Controller
 import lt.dragas.birc.message.Request
 import lt.dragas.birc.message.Response
 
-/**
- * Created by cpartner on 2016-10-18.
- */
-class Quit() : Route("quit")
+
+class Quit() : Controller()
 {
-    override val hasArguments: Boolean = true
-    override fun onTrigger(request: Request): Response
+    override fun onTrigger(request: Request)
     {
-        return Response("quit ${request.message}")
+        Output.default.writeResponse(Response("quit ${request.message}"))
     }
 }

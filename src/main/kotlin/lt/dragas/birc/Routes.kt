@@ -1,6 +1,11 @@
 package lt.dragas.birc
 
-import lt.dragas.birc.basic.Route
+
+import lt.dragas.birc.basic.route.RegexRoute
+import lt.dragas.birc.basic.route.Route
+import lt.dragas.birc.routes.channel.Move
+import lt.dragas.birc.routes.channel.Quit
+import lt.dragas.birc.routes.channel.Random
 import java.util.*
 
 /**
@@ -11,6 +16,21 @@ import java.util.*
 fun initializeRoutes(): Array<Route.RouteGroup>
 {
     val array = ArrayList<Route.RouteGroup>()
-
+    val simpleRouteGroup = Route.RouteGroup("do")
+    simpleRouteGroup.add(Route.Builder()
+            .setCommand("join")
+            .setHasArguments(true)
+            .setController(Move())
+            .setIgnoreCaps(true)
+            .setType(Route.CHANNEL.and(Route.PRIVATE))
+            .build())
+    simpleRouteGroup.add(Route.Builder()
+            .setCommand("leave")
+            .setType(Route.CHANNEL.and(Route.PRIVATE))
+            .setIgnoreCaps(true)
+            .setController(Quit())
+            .setHasArguments(true)
+            .build())
+    simpleRouteGroup.add(RegexRoute("\\d+d\\d+((\\+|-)\\d+)*", Random()))
     return array.toTypedArray()
 }

@@ -1,6 +1,6 @@
 package lt.dragas.birc.main
 
-import lt.dragas.birc.basic.Input
+import lt.dragas.birc.basic.io.Input
 import java.io.InputStream
 
 /**

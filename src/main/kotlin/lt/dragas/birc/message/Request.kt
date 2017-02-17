@@ -1,6 +1,6 @@
 package lt.dragas.birc.message
 
-import lt.dragas.birc.basic.Route
+import lt.dragas.birc.basic.route.Route
 
 /**
  * Created by mgrid on 2016-11-04.

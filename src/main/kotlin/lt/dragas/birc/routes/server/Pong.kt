@@ -1,28 +1,18 @@
 package lt.dragas.birc.routes.server
 
-import lt.dragas.birc.basic.Route
+import lt.dragas.birc.basic.Client
+import lt.dragas.birc.basic.io.Output
+import lt.dragas.birc.basic.route.Controller
 import lt.dragas.birc.message.Request
 import lt.dragas.birc.message.Response
 
-/**
- * Created by cpartner on 2016-10-18.
- */
-class Pong() : Route("ping")
+
+class Pong : Controller()
 {
-    override val type: Int = PING
 
-    override fun canTrigger(request: Request): Boolean
+    override fun onTrigger(request: Request)
     {
-        if (request.type == type)
-        {
-            doTrigger(request)
-            return true
-        }
-        return false
-    }
-
-    override fun onTrigger(request: Request): Response
-    {
-        return Response("pong ${request.message}")
+        Output.default.writeResponse(Response("pong ${request.message}"))
+        Client.default.onPong()
     }
 }

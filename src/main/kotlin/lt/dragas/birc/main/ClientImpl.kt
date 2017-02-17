@@ -1,9 +1,9 @@
 package lt.dragas.birc.main
 
 import lt.dragas.birc.basic.Client
-import lt.dragas.birc.basic.Input
-import lt.dragas.birc.basic.Output
-import lt.dragas.birc.basic.Route
+import lt.dragas.birc.basic.io.Input
+import lt.dragas.birc.basic.io.Output
+import lt.dragas.birc.basic.route.Route
 import lt.dragas.birc.message.Response
 
 /**

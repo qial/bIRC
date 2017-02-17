@@ -1,4 +1,4 @@
-package lt.dragas.birc.basic
+package lt.dragas.birc.basic.io
 
 import lt.dragas.birc.message.Response
 import java.io.DataOutputStream
