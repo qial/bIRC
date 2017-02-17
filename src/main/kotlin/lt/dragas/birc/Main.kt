@@ -1,16 +1,13 @@
 package lt.dragas.birc
 
 import lt.dragas.birc.main.ClientImpl
-import lt.dragas.birc.main.Settings
+import lt.dragas.birc.main.SettingsImpl
 
 
-/**
- * Created by cpartner on 2016-10-04.
- */
 fun main(args: Array<String>)
 {
-    val routes = Routes.initializeRoutes()
-    val settings = Settings.initializeSettings()
+    val routes = initializeRoutes()
+    val settings = SettingsImpl.initializeSettings()
     val client = ClientImpl(routes)
     client.setup(settings).connect()
 }
