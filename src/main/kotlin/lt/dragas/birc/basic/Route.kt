@@ -4,7 +4,6 @@ import lt.dragas.birc.basic.exception.DuplicateItemException
 import lt.dragas.birc.basic.exception.FinalRouteGroupException
 import lt.dragas.birc.basic.exception.NotFinalRouteGroupException
 import lt.dragas.birc.message.Request
-import lt.dragas.birc.message.Response
 import lt.dragas.birc.routes.server.Pong
 import java.util.*
 
@@ -142,7 +141,7 @@ abstract class Route(val triggerWord: String) : Listener.Route, Runnable
          * In [RouteGroup] this method shouldn't be called as the group is not guaranteed to have a
          * route that corresponds to particular request.
          */
-        override fun onTrigger(request: Request): Response
+        override fun onTrigger(request: Request)
         {
             throw NoSuchMethodException()
         }

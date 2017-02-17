@@ -1,5 +1,6 @@
 package lt.dragas.birc.basic
 
+import lt.dragas.birc.message.Response
 import java.io.DataOutputStream
 import java.io.OutputStream
 import java.io.OutputStreamWriter
@@ -22,6 +23,7 @@ abstract class Output(outputStream: OutputStream)
      * @param response String : preformatted message that is sent to server.
      * @param sendToServer Boolean : notes whether or not the response should be sent to server.
      */
+    @JvmOverloads
     fun writeResponse(response: String, sendToServer: Boolean = true)
     {
         if (sendToServer)
@@ -42,6 +44,11 @@ abstract class Output(outputStream: OutputStream)
         cout.println(message)
     }
 
+    @JvmOverloads
+    fun writeResponse(response: Response, sendToServer: Boolean = true)
+    {
+        writeResponse(response.toString(), sendToServer)
+    }
     companion object
     {
         lateinit var default: Output

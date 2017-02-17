@@ -41,7 +41,6 @@ abstract class Input(inputStream: InputStream) : Runnable
      * MOTD, general notifications and other garbage or even to note one of the routes that next response is important.
      * For what ever reason.
      */
-    @Synchronized
     fun getRequest(): Request
     {
         val rawRequest = Request(sin.nextLine())

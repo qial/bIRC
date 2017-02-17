@@ -33,7 +33,7 @@ interface Listener
          *
          *  @return [Response] - formatted response by this particular route
          */
-        fun onTrigger(request: Request): Response
+        fun onTrigger(request: Request)
 
         /**
          * Returns whether or not a thread with this particular Route has been started.

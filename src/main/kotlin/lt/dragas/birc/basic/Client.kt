@@ -47,16 +47,15 @@ abstract class Client(val routes: Array<RouteGroup>) : Socket(), Listener.Client
     {
         outer@ while (running)
         {
-            val line = sin.obtainRequest() ?: continue
-            routes.forEach {
-                if (it.canTrigger(line))
-                {
-                    return@forEach
+            val request = sin.obtainRequest() ?: continue
+            Thread(Runnable {
+                routes.forEach {
+                    if (it.canTrigger(request))
+                        return@Runnable
                 }
-            }
+            }, "Thread finder").start()
         }
     }
-
     companion object
     {
         lateinit var default: Client
