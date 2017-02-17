@@ -10,18 +10,18 @@ import java.net.Socket
  * Contains default methods needed for [Socket] to work in general.
  * @param routes Route set, which consumes [Request] to generate [Response].
  */
-abstract class BasicClient(val routes: Array<RouteGroup>) : Socket(), Listener.Client, Listener.Subscriber
+abstract class Client(val routes: Array<RouteGroup>) : Socket(), Listener.Client
 {
-    lateinit var settings: BasicSettings
-    abstract var sin: BasicInput
-    abstract var sout: BasicOutput
+    lateinit var settings: Settings
+    abstract var sin: Input
+    abstract var sout: Output
     var running = false
     var initiliazed = false
     /**
      * Initializes client from provided file.
      */
 
-    open fun setup(settings: BasicSettings): BasicClient
+    open fun setup(settings: Settings): Client
     {
         this.settings = settings
         return this
@@ -37,16 +37,9 @@ abstract class BasicClient(val routes: Array<RouteGroup>) : Socket(), Listener.C
         run()
     }
 
-    override fun onPost(response: Response)
-    {
-        sout.appendResponse(response)
-        if (response.rawResponse.startsWith("pong", true))
-            onPong()
-    }
-
     override fun onConnect()
     {
-        BasicClient.default = this
+        Client.default = this
         running = true
     }
 
@@ -66,6 +59,6 @@ abstract class BasicClient(val routes: Array<RouteGroup>) : Socket(), Listener.C
 
     companion object
     {
-        lateinit var default: BasicClient
+        lateinit var default: Client
     }
 }

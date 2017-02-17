@@ -1,6 +1,6 @@
 package lt.dragas.birc
 
-import lt.dragas.birc.main.Client
+import lt.dragas.birc.main.ClientImpl
 import lt.dragas.birc.main.Settings
 
 
@@ -11,6 +11,6 @@ fun main(args: Array<String>)
 {
     val routes = Routes.initializeRoutes()
     val settings = Settings.initializeSettings()
-    val client = Client(routes)
+    val client = ClientImpl(routes)
     client.setup(settings).connect()
 }

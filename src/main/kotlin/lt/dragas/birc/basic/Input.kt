@@ -5,15 +5,12 @@ import java.io.InputStream
 import java.util.*
 
 /**
- * Created by cpartner on 2016-10-06.
- */
-/**
  * Contains default methods needed for [InputStream] to function. Since it implements [Runnable] interface,
  * it does not throttle the main thread while waiting for responses from server.
  */
-abstract class BasicInput(inputStream: InputStream) : Runnable
+abstract class Input(inputStream: InputStream) : Runnable
 {
-    private val thread = Thread(this, "BasicInput")
+    private val thread = Thread(this, "Input")
     protected val sin = Scanner(inputStream)
     protected var isRunning: Boolean = false
     @Volatile protected var serverResponses: LinkedList<Request> = LinkedList()

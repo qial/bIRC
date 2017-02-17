@@ -10,7 +10,7 @@ interface Listener
     {
 
         /**
-         * A listener that is triggered when socket successfully conects to server.
+         * A listener that is triggered when socket successfully connects to server.
          *
          * Due to how sockets work, IO streams are only initialized when connection is successful, thus Client's Input/Output
          * implementations have to be initialized here, meanwhile if client fails to connect to server an exception is thrown.
@@ -41,16 +41,5 @@ interface Listener
          * @return true, if a thread had been started, otherwise false.
          */
         fun canTrigger(request: Request): Boolean
-    }
-
-    /**
-     * An interface for [BasicMessageManager] listeners.
-     */
-    interface Subscriber
-    {
-        /**
-         * Triggered when a [Response] is posted.
-         */
-        fun onPost(response: Response)
     }
 }

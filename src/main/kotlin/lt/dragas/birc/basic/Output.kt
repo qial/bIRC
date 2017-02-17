@@ -1,39 +1,18 @@
 package lt.dragas.birc.basic
 
-import lt.dragas.birc.message.Response
 import java.io.DataOutputStream
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.io.PrintStream
-import java.util.*
 
 /**
- * Contains only the most basic methods needed for [OutputStream] to function. Since it implements
- * [Runnable] interface, it does not throttle the main thread while waiting for client to generate responses.
+ * Contains only the most basic methods needed for [OutputStream] to function.
  * @param outputStream OutputStream : server socket's output stream.
  */
-abstract class BasicOutput(outputStream: OutputStream) : Runnable
+abstract class Output(outputStream: OutputStream)
 {
-    private val thread = Thread(this, "BasicOutput")
     protected val sout: OutputStreamWriter = OutputStreamWriter(DataOutputStream(outputStream))
     protected val cout: PrintStream = System.out
-    protected val responses: LinkedList<Response> = LinkedList()
-    protected var isRunning: Boolean = false
-    override fun run()
-    {
-        isRunning = true
-        while (isRunning)
-        {
-            val response = responses.pollFirst()
-            if (response == null)
-            {
-                Thread.sleep(1000)
-                continue
-            }
-            writeResponse(response.toString())
-            responses.remove(response)
-        }
-    }
 
     /**
      * Writes response to server. Due to the nature of how IRCs work, the response here is appended with CRLF new line
@@ -63,19 +42,8 @@ abstract class BasicOutput(outputStream: OutputStream) : Runnable
         cout.println(message)
     }
 
-    /**
-     * Appends response to response queue. The order here used is FIFO, just like in [BasicInput]
-     */
-    fun appendResponse(response: Response)
+    companion object
     {
-        responses.offerLast(response)
-    }
-
-    /**
-     * Starts this particular thread.
-     */
-    fun start()
-    {
-        thread.start()
+        lateinit var default: Output
     }
 }

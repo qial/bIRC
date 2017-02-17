@@ -1,29 +1,26 @@
 package lt.dragas.birc.main
 
-import lt.dragas.birc.basic.*
+import lt.dragas.birc.basic.Client
+import lt.dragas.birc.basic.Input
+import lt.dragas.birc.basic.Output
+import lt.dragas.birc.basic.Route
 import lt.dragas.birc.message.Response
 
 /**
- * Example implementation of this framework's [BasicClient] class.
+ * Example implementation of this framework's [ClientImpl] class.
  */
-class Client(routes: Array<Route.RouteGroup>) : BasicClient(routes)
+class ClientImpl(routes: Array<Route.RouteGroup>) : Client(routes)
 {
-    override lateinit var sin: BasicInput
-    override lateinit var sout: BasicOutput
-    override fun setup(settings: BasicSettings): BasicClient
-    {
-        MessageManager.register(this)
-        return super.setup(settings)
-    }
+    override lateinit var sin: Input
+    override lateinit var sout: Output
 
     override fun onConnect()
     {
         super.onConnect()
         var responseCount = 0
-        sin = Input(inputStream)
-        sout = Output(outputStream)
+        sin = InputImpl(inputStream)
+        sout = OutputImpl(outputStream)
         sin.start()
-        sout.start()
         while (responseCount < 2)
         {
             val response = sin.obtainRequest()

@@ -1,10 +1,8 @@
 package lt.dragas.birc.main
 
-import lt.dragas.birc.basic.BasicSettings
+import lt.dragas.birc.basic.Settings
 
-/**
- * Created by cpartner on 2016-11-10.
- */
-object Settings : BasicSettings()
+
+object Settings : Settings()
 {
 }

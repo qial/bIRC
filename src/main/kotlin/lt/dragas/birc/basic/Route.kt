@@ -3,7 +3,6 @@ package lt.dragas.birc.basic
 import lt.dragas.birc.basic.exception.DuplicateItemException
 import lt.dragas.birc.basic.exception.FinalRouteGroupException
 import lt.dragas.birc.basic.exception.NotFinalRouteGroupException
-import lt.dragas.birc.main.MessageManager
 import lt.dragas.birc.message.Request
 import lt.dragas.birc.message.Response
 import lt.dragas.birc.routes.server.Pong
@@ -69,7 +68,7 @@ abstract class Route(val triggerWord: String) : Listener.Route, Runnable
 
     override fun run()
     {
-        MessageManager.post(onTrigger(request))
+        onTrigger(request)
     }
 
     /**
