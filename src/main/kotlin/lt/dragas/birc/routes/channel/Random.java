@@ -67,6 +67,6 @@ public class Random extends Controller
             sb.append(". Mod: ");
             sb.append(mod);
         }
-        Output.Companion.getDefault().writeResponse(new Response(request.getTarget(), sb.toString()));
+        Output.getDefault().writeResponse(new Response(request.getTarget(), sb.toString()));
     }
 }
