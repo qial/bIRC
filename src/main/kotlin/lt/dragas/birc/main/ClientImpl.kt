@@ -32,7 +32,7 @@ class ClientImpl(routes: Array<Route.RouteGroup>) : Client(routes)
             responseCount++
         }
         sout.writeResponse("user ${settings.username} ${settings.mode} ${settings.unused} ${settings.realName}")
-        sout.writeResponse("nick nerdyy")
+        sout.writeResponse("nick ${settings.nicknames[0]}")
     }
 
     /**
@@ -46,7 +46,7 @@ class ClientImpl(routes: Array<Route.RouteGroup>) : Client(routes)
         {
             initiliazed = true
             settings.channels.forEach {
-                sout.appendResponse(Response("join $it"))
+                sout.writeResponse(Response("join $it"))
             }
         }
     }
