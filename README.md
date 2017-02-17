@@ -7,43 +7,33 @@ Somewhat elegant Java/Kotlin IRC bot framework.
 bIRC was written with modular functionality in mind, thus adding responses 
 is just as easy as creating your own class. Literally.
 
-First you have to create a class which extends `Route`.
+First you have to create a class which extends `Controller`.
 
 ```
-class RespondToHello extends Route
+class RespondToHello extends Controller
 {
-    RespondToHello(String commandWord) // note, your constructor needs to call super with route's trigger word.
+    @Override
+    void onTrigger(Request request)
     {
-        super(commandWord);
+        String formattedResponse = "";
+        //do stuff
+        Output.getDefault().writeResponse(new Response(request.getTarget(), formattedResponse);
     }
 }
 ```
-Note: depending on your preference, you can either write your trigger word 
-here or in Routes.kt file. This particular example assumes that you want 
-the latter.
 
-Then you have to override its `Response.ToServer onTrigger(Request request)` 
-method.
-
-```
-Response.ToServer onTrigger(Request request)
-{
-    return new Response(request.getTarget(), "HELLO WORLD");
-}
-```
-
-Finally you register your route in `Routes.kt` file by adding it into 
+And then you register your route in `Routes.kt` file by adding it into 
 your or a predefined `RouteGroup`.
 
 ```
 fun initializeRoutes(): Array<Route.RouteGroup> {
     val array = ArrayList<Route.RouteGroup>()
-    array.add(ServerRouteGroup(Pong()))
-    array.add(CommonRouteGroup(RespondToHello("hello"))
+    val simpleRouteGroup = Route.RouteGroup("do ")
+    simpleRouteGroup.add(Route.Builder().setCommand("hello").setController(RespondToHello()).setType(Route.CHANNEL).build())
+    simpleRouteGroup.finalize() // be sure to call this
     return array.toTypedArray()
 }
 ```
 That's it!
 
-Depending on preference, you might want to override `type` field in your 
-route to respond to either private messages, channel messages or both (with type `NONE`).
+Since Routes are built using builder pattern, you might want to explore more options than the 3 provided. For example `setHasArguments` and `setIgnoreCaps`.
