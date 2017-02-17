@@ -1,6 +1,7 @@
 package lt.dragas.birc
 
 
+import lt.dragas.birc.basic.route.PingRoute
 import lt.dragas.birc.basic.route.RegexRoute
 import lt.dragas.birc.basic.route.Route
 import lt.dragas.birc.routes.channel.Move
@@ -16,7 +17,7 @@ import java.util.*
 fun initializeRoutes(): Array<Route.RouteGroup>
 {
     val array = ArrayList<Route.RouteGroup>()
-    val simpleRouteGroup = Route.RouteGroup("do")
+    val simpleRouteGroup = Route.RouteGroup("do ")
     simpleRouteGroup.add(Route.Builder()
             .setCommand("join")
             .setHasArguments(true)
@@ -32,5 +33,11 @@ fun initializeRoutes(): Array<Route.RouteGroup>
             .setHasArguments(true)
             .build())
     simpleRouteGroup.add(RegexRoute("\\d+d\\d+((\\+|-)\\d+)*", Random()))
+    simpleRouteGroup.finalize()
+    val serverRouteGroup = Route.RouteGroup("")
+    serverRouteGroup.add(PingRoute())
+    serverRouteGroup.finalize()
+    array.add(simpleRouteGroup)
+    array.add(serverRouteGroup)
     return array.toTypedArray()
 }

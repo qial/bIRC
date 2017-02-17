@@ -1,12 +1,19 @@
 package lt.dragas.birc.basic.route
 
 import lt.dragas.birc.message.Request
+import lt.dragas.birc.routes.server.Pong
 
-open class RegexRoute(val regexString: String, override var controller: Controller) : Route(regexString)
+class PingRoute : Route("")
 {
+    override var controller: Controller
+        get() = Pong()
+        set(value)
+        {
+        }
+
     override fun canTrigger(request: Request): Boolean
     {
-        if (isEnabled && type.and(request.type) == type && Regex(regexString).matches(request.message))
+        if (request.type == PING)
         {
             controller.onTrigger(request)
             return true

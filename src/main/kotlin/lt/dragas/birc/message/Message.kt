@@ -9,4 +9,8 @@ open class Message
     var target: String = ""
     var username: String = ""
     var message: String = ""
+    override fun toString(): String
+    {
+        return rawResponse
+    }
 }

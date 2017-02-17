@@ -11,4 +11,8 @@ import java.io.OutputStream
  */
 class OutputImpl(outputStream: OutputStream) : Output(outputStream)
 {
+    init
+    {
+        default = this
+    }
 }

@@ -65,7 +65,7 @@ open class Route(val command: String)
      * Contents of RouteGroup are not meant to be modified at runtime, thus its content is converted to an array.
      * Also RouteGroups may not contain [Route] with matching [triggerWord]
      */
-    open class RouteGroup(val command: String, vararg routes: Route)
+    open class RouteGroup(val prefix: String, vararg routes: Route)
     {
         protected var hasArguments: Boolean = true
         protected lateinit var routeArray: Array<Route>
@@ -74,14 +74,7 @@ open class Route(val command: String)
         protected var type: Int = NONE
         protected var ignoreCaps: Boolean = true
         protected var isEnabled: Boolean = true
-        protected val commandWord: String
-            get()
-            {
-                val sb = StringBuilder(command)
-                if (hasArguments)
-                    sb.append(" ")
-                return sb.toString()
-            }
+
         init
         {
             routes.forEach {
@@ -123,9 +116,9 @@ open class Route(val command: String)
         {
             if (!isFinal)
                 throw NotFinalRouteGroupException()
-            if (isEnabled && request.message.startsWith(commandWord, ignoreCaps))
+            if (isEnabled && request.message.startsWith(prefix, ignoreCaps))
             {
-                request.message = request.message.replaceFirst(commandWord, "", true)
+                request.message = request.message.replaceFirst(prefix, "", true)
                 routeArray.forEach {
                     val triggered = it.canTrigger(request)
                     if (triggered)
