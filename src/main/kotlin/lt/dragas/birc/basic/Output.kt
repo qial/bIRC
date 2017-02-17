@@ -39,7 +39,7 @@ abstract class Output(outputStream: OutputStream)
      *
      * @param message String: line, that is outputted to console.
      */
-    fun writeConsole(message: String)
+    private fun writeConsole(message: String)
     {
         cout.println(message)
     }
@@ -51,6 +51,7 @@ abstract class Output(outputStream: OutputStream)
     }
     companion object
     {
+        @JvmStatic
         lateinit var default: Output
     }
 }
