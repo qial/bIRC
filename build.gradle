@@ -3,18 +3,22 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.0.5-eap-117'
+    ext.dokka_version = '0.9.13'
 
     repositories {
+    	jcenter()
         maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
         mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.dokka'
 
 sourceCompatibility = 1.8
 
